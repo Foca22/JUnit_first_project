@@ -10,11 +10,15 @@ public class StringExpression implements Expression {
 	public StringExpression(String expression) {
 		String[] tokens = expression.trim().split("\\s+");
 		elements = new ArrayList<>();
-		
+
+		if (tokens.length % 2 == 0 || tokens[0].isEmpty()) {
+			throw new ValidationException("Expression must have an even number of tokens.");
+		}
+
 		for (int i=0; i<tokens.length; ++i) {
 			elements.add(i%2==0
 					? readAsNumber(tokens[i]) 
-					: tokens[i]);
+					: readAsBinaryOperator(tokens[i]));
 		}
 	}
 	
@@ -46,7 +50,18 @@ public class StringExpression implements Expression {
 			throw new RuntimeException(
 					"Error checking if '" + str + "' is a digit", e);
 		}
-		
+	}
+
+	private BinaryOperator readAsBinaryOperator(String token) {
+		for (BinaryOperator operator : BinaryOperator.values()) {
+			try {
+				if (operator.getSymbol().equals(token))
+					return operator;
+			} catch (NumberFormatException e) {
+				throw new ValidationException("Operator '" + operator + "'is not an operator");
+			}
+		}
+		return null;
 	}
 
 	public List<Object> getElements() {

@@ -9,35 +9,13 @@ public class ExpressionEvaluator {
 		List<Object> elements = expression.getElements();
 		int result = (int) elements.get(0);
 		for (int i=0; i<(elements.size()-1)/2; ++i) {
-			result = evalBinary(
-					(String) elements.get(i*2+1), 
-					result, 
-					(int) elements.get(i*2+2));
+			result = evalBinary(result, (BinaryOperator) elements.get(i*2+1), (int) elements.get(i*2+2));
 		}
 		return result;
 	}
-	
+
 	public static Integer evalBinary(
-			String operator, Integer left, Integer right) {
-		switch (operator) {
-		case "+":
-			return left + right;
-		case "-":
-			return left - right;
-		case "*":
-			return left * right;
-		case "/":
-			return left / right;
-		case "%":
-			return left % right;
-		default:
-			throw new ValidationException(
-					"Operator '" + operator + "' is not known");
-		}
-	}
-	
-	public static Integer evalBinary(
-			BinaryOperator op, Integer left, Integer right) {
+			Integer left, BinaryOperator op,  Integer right) {
 		switch (op) {
 		case ADD:
 			return left + right;

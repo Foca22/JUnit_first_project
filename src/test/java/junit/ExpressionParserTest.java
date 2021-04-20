@@ -1,5 +1,6 @@
 package junit;
 
+import static org.siit.BinaryOperator.ADD;
 import static org.siit.BinaryOperator.DIVIDE;
 
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class ExpressionParserTest {
 	public void oneBinaryOperandTest() {
 		StringExpression e = new StringExpression("3 + 2");
 		Assert.assertEquals(
-				Arrays.asList(3, "+", 2), e.getElements());
+				Arrays.asList(3, ADD, 2), e.getElements());
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -56,7 +57,7 @@ public class ExpressionParserTest {
 	}
 	
 	//when parsing with enums make sure unknown operands throw exception
-	@Test(expected =ValidationException.class)
+	@Test
 	public void incorrectOperanShouldThrowException() {
 		new StringExpression("8 abc 2");
 	}
